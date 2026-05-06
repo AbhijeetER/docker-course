@@ -2,11 +2,18 @@ FROM node:19.6-alpine
 
 WORKDIR /user/src/app
 
+ENV NODE_ENV=production
+
 COPY package*.json ./
 
-RUN npm install 
+RUN npm ci --only=production 
 
-COPY . .
+USER node
+
+COPY --chown=node:node ./src .
 
 
-CMD ["npm", "run", "dev"]
+EXPOSE 3000
+
+
+CMD ["node" , "index.js"]
